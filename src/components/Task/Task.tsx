@@ -1,21 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 
 import CompletedTask from './../context/CompletedTask';
+import EditidTask from './../context/EditidTask';
 import RemoveTask from './../context/RemoveTask';
 import TaskTypes from './../interfaces/ITask';
 
-const Task = ({ id_ = null, status, description, created }: TaskTypes): JSX.Element => {
-  const completedTask = useContext(CompletedTask);
-  const removeTask = useContext(RemoveTask);
+type fnType = ((id: string | null, value?: string) => void) | null;
+
+const Task = ({ id_, status, description, created }: TaskTypes): JSX.Element => {
+  const [value, setValue] = useState(description);
+  const completedTask = useContext<fnType>(CompletedTask);
+  const removeTask = useContext<fnType>(RemoveTask);
+  const editidTask = useContext<((id: string | null, value: string) => void) | null>(EditidTask);
 
   const handleToggleCompleteTask = (evt: React.ChangeEvent<HTMLInputElement>): void => {
     if (completedTask && id_)
       completedTask(id_);
-  };
+  }
 
-  const handleRemoveTask = (evt: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRemoveTask = (evt: React.MouseEvent<HTMLButtonElement>): void => {
     if (removeTask && id_)
       removeTask(id_);
+  };
+
+  const handleChangeValue = (evt: React.KeyboardEvent<HTMLInputElement>): void => {
+    const target: any = evt.target;
+    if (editidTask && id_) {
+      if (evt.keyCode === 13) {
+        editidTask(id_, target.value)
+      }
+    }
+  };
+
+  const handleChangeData = (evt: React.ChangeEvent<HTMLInputElement>): void => {
+    const target: any = evt.target;
+    setValue(target.value);
   };
 
   return (
@@ -29,7 +48,7 @@ const Task = ({ id_ = null, status, description, created }: TaskTypes): JSX.Elem
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy" onClick={handleRemoveTask}></button>
       </div>
-      {status === 'editing' && <input type="text" className="edit" value="Editing task" />}
+      {status === 'editing' && <input type="text" className="edit" onChange={handleChangeData} onKeyUp={handleChangeValue} value={value} />}
     </li>
   );
 };

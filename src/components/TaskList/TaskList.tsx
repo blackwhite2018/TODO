@@ -7,8 +7,8 @@ import './index.css';
 const TaskList: React.FC<{ tasks: Array<TaskTypes> }> = ({ tasks }) => {
   return (
     <ul className="todo-list">
-      {tasks.map((task: TaskTypes) => (
-        <Task {...task} />
+      {tasks.map(({ id_, ...task }: TaskTypes) => (
+        <Task key={id_} id_={id_} {...task} />
       ))}
     </ul >
   );
