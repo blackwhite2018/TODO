@@ -1,10 +1,8 @@
 import React from 'react';
 
-import TaskTypes from './../interfaces/ITask';
-import Task from './../Task';
+import TaskTypes from '../interfaces/ITask';
+import Task from '../Task';
 import './index.css';
-
-type tt = Array<TaskTypes>;
 
 const TaskList: React.FC<{ tasks: Array<TaskTypes> }> = ({ tasks }) => {
   return (
@@ -12,7 +10,7 @@ const TaskList: React.FC<{ tasks: Array<TaskTypes> }> = ({ tasks }) => {
       {tasks.map(({ id_, ...task }: TaskTypes) => (
         <Task key={id_} id_={id_} {...task} />
       ))}
-    </ul >
+    </ul>
   );
 };
 

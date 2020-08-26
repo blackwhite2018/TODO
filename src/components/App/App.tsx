@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import shortid from 'shortid';
 
+import Header from '../Header';
+import Footer from '../Footer';
+import TaskList from '../TaskList';
 
-import Header from './../Header';
-import Footer from './../Footer';
-import TaskList from './../TaskList';
-
-import CompletedTask from './../context/CompletedTask';
-import RemoveTask from './../context/RemoveTask';
-import EditidTask from './../context/EditidTask';
-import SetFilter from './../context/SetFilter';
-import AddTask from './../context/AddTask';
-import TaskTypes from './../interfaces/ITask';
+import CompletedTask from '../context/CompletedTask';
+import RemoveTask from '../context/RemoveTask';
+import EditidTask from '../context/EditidTask';
+import SetFilter from '../context/SetFilter';
+import AddTask from '../context/AddTask';
+import TaskTypes from '../interfaces/ITask';
 import './index.css';
 
 const createFilterList = (list: Array<TaskTypes>, filterName: string): Array<TaskTypes> => {
@@ -43,25 +42,31 @@ const App: React.FC = () => {
     {
       status: 'completed',
       description: 'Completed task',
-      created: `${formatDistanceToNow(new Date(2014, 6, 2))}`
+      created: `${formatDistanceToNow(new Date(2014, 6, 2))}`,
     },
     {
       status: 'active',
       description: 'Editing task',
-      created: `${formatDistanceToNow(new Date(2015, 0, 1, 0, 0, 15))} `
+      created: `${formatDistanceToNow(new Date(2015, 0, 1, 0, 0, 15))} `,
     },
     {
       status: 'active',
       description: 'Active task',
-      created: `${formatDistanceToNow(new Date(2016, 0, 1))}`
-    }
+      created: `${formatDistanceToNow(new Date(2016, 0, 1))}`,
+    },
   ]);
 
   useEffect(() => {
-    const taskIds: Array<TaskTypes> = tasks.reduce((acc: Array<TaskTypes>, task: TaskTypes) => ([...acc, {
-      id_: shortid.generate(),
-      ...task
-    }]), []);
+    const taskIds: Array<TaskTypes> = tasks.reduce(
+      (acc: Array<TaskTypes>, task: TaskTypes) => [
+        ...acc,
+        {
+          id_: shortid.generate(),
+          ...task,
+        },
+      ],
+      []
+    );
 
     setTask(taskIds);
     setFilterList(createFilterList(taskIds, filter));
@@ -69,8 +74,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const counter: number = tasks.reduce((acc, task: TaskTypes): number => {
-      if (task.status !== 'completed')
-        acc++;
+      if (task.status !== 'completed') return acc + 1;
       return acc;
     }, 0);
     setCount(counter);
@@ -79,7 +83,7 @@ const App: React.FC = () => {
   const handleCompletedTask = (id: string | null): void => {
     const copy: Array<TaskTypes> = [...tasks];
     const index: number = tasks.findIndex(({ id_ }: TaskTypes) => id_ === id);
-    const status: string | undefined = copy[index].status;
+    const { status } = copy[index];
 
     copy[index].status = status === 'completed' ? 'active' : 'completed';
     setTask(copy);
@@ -123,7 +127,7 @@ const App: React.FC = () => {
       id_: shortid.generate(),
       status: 'Active',
       description: value,
-      created: formatDistanceToNow(new Date())
+      created: formatDistanceToNow(new Date()),
     };
     setTask([...tasks, newTask]);
     setFilterList(createFilterList([...tasks, newTask], filter));
@@ -143,11 +147,7 @@ const App: React.FC = () => {
           </RemoveTask.Provider>
         </CompletedTask.Provider>
         <SetFilter.Provider value={handleSetFilter}>
-          <Footer
-            removeAllCompletedTask={handleRemoveAllCompletedTask}
-            counter={count}
-            currentFilter={filter}
-          />
+          <Footer removeAllCompletedTask={handleRemoveAllCompletedTask} counter={count} currentFilter={filter} />
         </SetFilter.Provider>
       </section>
     </section>

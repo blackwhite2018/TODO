@@ -1,3 +1,3 @@
-import TasksFilter from './TasksFilter';
+import TasksFilter from './TasksFilter.tsx';
 
 export default TasksFilter;
