@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import shortid from 'shortid';
 
 import SetFilter from './../context/SetFilter';
 import TaskFilterTypes from './../interfaces/ITaskFilterTypes';
@@ -8,7 +9,6 @@ const filters: Array<string> = ['All', 'Active', 'Completed'];
 
 const TasksFilter = ({ currentFilter }: TaskFilterTypes): JSX.Element => {
   const setFilterContext = useContext(SetFilter);
-  console.log(currentFilter);
 
   const handleSetFilter = (evt: React.MouseEvent<HTMLButtonElement>): void => {
     if (setFilterContext) {
@@ -18,7 +18,7 @@ const TasksFilter = ({ currentFilter }: TaskFilterTypes): JSX.Element => {
   };
 
   const filtersList: Array<JSX.Element> = filters.map((filter: string) => (
-    <li>
+    <li key={shortid.generate()}>
       <button className={currentFilter === filter ? 'selected' : ''} onClick={handleSetFilter} data-filter={filter} >{filter}</button>
     </li>
   ));

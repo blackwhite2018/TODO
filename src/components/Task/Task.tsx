@@ -8,7 +8,7 @@ import TaskTypes from './../interfaces/ITask';
 type fnType = ((id: string | null, value?: string) => void) | null;
 
 const Task = ({ id_, status, description, created }: TaskTypes): JSX.Element => {
-  const [value, setValue] = useState(description);
+  const [value, setValue] = useState<string>(description);
   const completedTask = useContext<fnType>(CompletedTask);
   const removeTask = useContext<fnType>(RemoveTask);
   const editidTask = useContext<((id: string | null, value: string) => void) | null>(EditidTask);

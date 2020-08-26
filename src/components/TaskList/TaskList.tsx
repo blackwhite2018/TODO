@@ -4,6 +4,8 @@ import TaskTypes from './../interfaces/ITask';
 import Task from './../Task';
 import './index.css';
 
+type tt = Array<TaskTypes>;
+
 const TaskList: React.FC<{ tasks: Array<TaskTypes> }> = ({ tasks }) => {
   return (
     <ul className="todo-list">

@@ -11,6 +11,7 @@ import CompletedTask from './../context/CompletedTask';
 import RemoveTask from './../context/RemoveTask';
 import EditidTask from './../context/EditidTask';
 import SetFilter from './../context/SetFilter';
+import AddTask from './../context/AddTask';
 import TaskTypes from './../interfaces/ITask';
 import './index.css';
 
@@ -57,7 +58,7 @@ const App: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const taskIds = tasks.reduce((acc: Array<TaskTypes>, task: TaskTypes) => ([...acc, {
+    const taskIds: Array<TaskTypes> = tasks.reduce((acc: Array<TaskTypes>, task: TaskTypes) => ([...acc, {
       id_: shortid.generate(),
       ...task
     }]), []);
@@ -117,9 +118,22 @@ const App: React.FC = () => {
     setFilterList(createFilterList(copy, filter));
   };
 
+  const handleAddTask = (value: string): void => {
+    const newTask: TaskTypes = {
+      id_: shortid.generate(),
+      status: 'Active',
+      description: value,
+      created: formatDistanceToNow(new Date())
+    };
+    setTask([...tasks, newTask]);
+    setFilterList(createFilterList([...tasks, newTask], filter));
+  };
+
   return (
     <section className="todoapp">
-      <Header />
+      <AddTask.Provider value={handleAddTask}>
+        <Header />
+      </AddTask.Provider>
       <section className="main">
         <CompletedTask.Provider value={handleCompletedTask}>
           <RemoveTask.Provider value={handleRemoveTask}>
