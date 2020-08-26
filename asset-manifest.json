@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/blackwhite2018/TODO/static/css/main.917424d2.chunk.css",
-    "main.js": "/blackwhite2018/TODO/static/js/main.8f6b2f4a.chunk.js",
-    "main.js.map": "/blackwhite2018/TODO/static/js/main.8f6b2f4a.chunk.js.map",
+    "main.js": "/blackwhite2018/TODO/static/js/main.98b5da15.chunk.js",
+    "main.js.map": "/blackwhite2018/TODO/static/js/main.98b5da15.chunk.js.map",
     "runtime-main.js": "/blackwhite2018/TODO/static/js/runtime-main.33e59ed1.js",
     "runtime-main.js.map": "/blackwhite2018/TODO/static/js/runtime-main.33e59ed1.js.map",
-    "static/js/2.0cbf578f.chunk.js": "/blackwhite2018/TODO/static/js/2.0cbf578f.chunk.js",
-    "static/js/2.0cbf578f.chunk.js.map": "/blackwhite2018/TODO/static/js/2.0cbf578f.chunk.js.map",
+    "static/js/2.cf375127.chunk.js": "/blackwhite2018/TODO/static/js/2.cf375127.chunk.js",
+    "static/js/2.cf375127.chunk.js.map": "/blackwhite2018/TODO/static/js/2.cf375127.chunk.js.map",
     "index.html": "/blackwhite2018/TODO/index.html",
-    "precache-manifest.f99c1b37e8bc9caa5f53bb6d97cf3c0a.js": "/blackwhite2018/TODO/precache-manifest.f99c1b37e8bc9caa5f53bb6d97cf3c0a.js",
+    "precache-manifest.878a30cfbbb8ffc482a1790728a782e8.js": "/blackwhite2018/TODO/precache-manifest.878a30cfbbb8ffc482a1790728a782e8.js",
     "service-worker.js": "/blackwhite2018/TODO/service-worker.js",
     "static/css/main.917424d2.chunk.css.map": "/blackwhite2018/TODO/static/css/main.917424d2.chunk.css.map",
-    "static/js/2.0cbf578f.chunk.js.LICENSE.txt": "/blackwhite2018/TODO/static/js/2.0cbf578f.chunk.js.LICENSE.txt"
+    "static/js/2.cf375127.chunk.js.LICENSE.txt": "/blackwhite2018/TODO/static/js/2.cf375127.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.33e59ed1.js",
-    "static/js/2.0cbf578f.chunk.js",
+    "static/js/2.cf375127.chunk.js",
     "static/css/main.917424d2.chunk.css",
-    "static/js/main.8f6b2f4a.chunk.js"
+    "static/js/main.98b5da15.chunk.js"
   ]
 }
