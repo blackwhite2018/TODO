@@ -1,7 +1,7 @@
 {
   "name": "todo-function",
   "version": "0.1.0",
-  "homepage": "https://github.com/blackwhite2018/TODO",
+  "homepage": "https://blackwhite2018.github.io/TODO",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
