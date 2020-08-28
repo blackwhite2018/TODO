@@ -3,4 +3,7 @@ export default interface TaskTypes {
   status?: string;
   description: string;
   created: string;
+  timerID?: any;
+  timer: boolean;
+  time: number;
 }

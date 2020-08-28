@@ -7,13 +7,10 @@ type FooterProps = {
   removeAllCompletedTask: Function;
   counter: number;
   currentFilter: string;
+  handleSetFilter: Function;
 };
 
-const Footer: React.FC<{
-  removeAllCompletedTask: Function;
-  counter: number;
-  currentFilter: string;
-}> = ({ removeAllCompletedTask, counter, currentFilter }: FooterProps) => {
+const Footer = ({ handleSetFilter, removeAllCompletedTask, counter, currentFilter }: FooterProps) => {
   const handleRemoveAllCompletedTask = (): void => {
     if (removeAllCompletedTask) removeAllCompletedTask();
   };
@@ -21,7 +18,7 @@ const Footer: React.FC<{
   return (
     <footer className="footer">
       <span className="todo-count">{counter} items left</span>
-      <TasksFilter currentFilter={currentFilter} />
+      <TasksFilter handleSetFilter={handleSetFilter} currentFilter={currentFilter} />
       <button type="button" className="clear-completed" onClick={handleRemoveAllCompletedTask}>
         Clear completed
       </button>

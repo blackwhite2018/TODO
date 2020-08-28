@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { formatDistanceToNow } from 'date-fns';
 import shortid from 'shortid';
 
 import Header from '../Header';
 import Footer from '../Footer';
 import TaskList from '../TaskList';
 
-import CompletedTask from '../context/CompletedTask';
-import RemoveTask from '../context/RemoveTask';
-import EditidTask from '../context/EditidTask';
-import SetFilter from '../context/SetFilter';
-import AddTask from '../context/AddTask';
 import TaskTypes from '../interfaces/ITask';
 import './index.css';
 
@@ -42,17 +36,26 @@ const App: React.FC = () => {
     {
       status: 'completed',
       description: 'Completed task',
-      created: `${formatDistanceToNow(new Date(2014, 6, 2))}`,
+      created: '2014, 6, 2',
+      time: 0,
+      timerID: 0,
+      timer: true,
     },
     {
       status: 'active',
       description: 'Editing task',
-      created: `${formatDistanceToNow(new Date(2015, 0, 1, 0, 0, 15))} `,
+      created: '2015, 1, 1',
+      time: 0,
+      timerID: 0,
+      timer: false,
     },
     {
       status: 'active',
       description: 'Active task',
-      created: `${formatDistanceToNow(new Date(2016, 0, 1))}`,
+      created: '2016, 2, 1',
+      time: 0,
+      timerID: 0,
+      timer: false,
     },
   ]);
 
@@ -78,6 +81,27 @@ const App: React.FC = () => {
       return acc;
     }, 0);
     setCount(counter);
+    const copy: any = [...tasks].reduce((acc: any, task): any => {
+      return [
+        ...acc,
+        {
+          ...task,
+          timerID: !task.timer
+            ? 0
+            : setInterval(() => {
+                setTask(copy);
+                setFilterList(createFilterList(copy, filter));
+              }, 1000),
+          time: task.timer ? task.time : task.time + 1,
+        },
+      ];
+    }, []);
+    return () => {
+      copy.forEach((task: TaskTypes) => {
+        clearInterval(task.timerID);
+      });
+      setFilterList(createFilterList(copy, filter));
+    };
   }, [tasks]);
 
   const handleCompletedTask = (id: string | null): void => {
@@ -123,32 +147,68 @@ const App: React.FC = () => {
   };
 
   const handleAddTask = (value: string): void => {
+    const id = shortid.generate();
+    const date = new Date();
     const newTask: TaskTypes = {
-      id_: shortid.generate(),
+      id_: id,
       status: 'Active',
       description: value,
-      created: formatDistanceToNow(new Date()),
+      created: `${date.getFullYear()}, ${date.getMonth()}, ${date.getDate()}`,
+      timerID: 0,
+      time: 0,
+      timer: false,
     };
-    setTask([...tasks, newTask]);
-    setFilterList(createFilterList([...tasks, newTask], filter));
+    const copy = [...tasks, newTask];
+    setTask(copy);
+    setFilterList(createFilterList(copy, filter));
+  };
+
+  const handlePauseTask = (id: string) => {
+    const copy: Array<TaskTypes> = [...tasks];
+    const index: number = tasks.findIndex(({ id_ }: TaskTypes) => id_ === id);
+    if (index !== -1) {
+      if (!copy[index].timer) {
+        copy[index].timerID = setInterval(() => {
+          copy[index].time += 1;
+        }, 1000);
+        copy[index].timer = true;
+      }
+    }
+    setTask(copy);
+    setFilterList(createFilterList(copy, filter));
+  };
+
+  const handlePlayTask = (id: string) => {
+    const copy: Array<TaskTypes> = [...tasks];
+    const index: number = tasks.findIndex(({ id_ }: TaskTypes) => id_ === id);
+    if (index !== -1) {
+      if (copy[index].timer) {
+        clearInterval(copy[index].timerID);
+        copy[index].timer = false;
+      }
+    }
+    setTask(copy);
+    setFilterList(createFilterList(copy, filter));
   };
 
   return (
     <section className="todoapp">
-      <AddTask.Provider value={handleAddTask}>
-        <Header />
-      </AddTask.Provider>
+      <Header handleAddTask={handleAddTask} />
       <section className="main">
-        <CompletedTask.Provider value={handleCompletedTask}>
-          <RemoveTask.Provider value={handleRemoveTask}>
-            <EditidTask.Provider value={handleEditingTask}>
-              <TaskList tasks={filterList} />
-            </EditidTask.Provider>
-          </RemoveTask.Provider>
-        </CompletedTask.Provider>
-        <SetFilter.Provider value={handleSetFilter}>
-          <Footer removeAllCompletedTask={handleRemoveAllCompletedTask} counter={count} currentFilter={filter} />
-        </SetFilter.Provider>
+        <TaskList
+          tasks={filterList}
+          handleCompletedTask={handleCompletedTask}
+          handleRemoveTask={handleRemoveTask}
+          handleEditingTask={handleEditingTask}
+          handlePlayTask={handlePlayTask}
+          handlePauseTask={handlePauseTask}
+        />
+        <Footer
+          removeAllCompletedTask={handleRemoveAllCompletedTask}
+          counter={count}
+          currentFilter={filter}
+          handleSetFilter={handleSetFilter}
+        />
       </section>
     </section>
   );

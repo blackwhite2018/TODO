@@ -1,31 +1,33 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { formatDistanceToNow, format } from 'date-fns';
 
-import CompletedTask from '../context/CompletedTask';
-import EditidTask from '../context/EditidTask';
-import RemoveTask from '../context/RemoveTask';
-import TaskTypes from '../interfaces/ITask';
-
-type fnType = ((id: string | null, value?: string) => void) | null;
-
-const Task = ({ id_, status, description, created }: TaskTypes): JSX.Element => {
+const Task = ({
+  handlePauseTask,
+  handlePlayTask,
+  handleCompletedTask,
+  handleRemoveTask,
+  handleEditingTask,
+  id_,
+  status,
+  description,
+  created,
+  time,
+}: any): JSX.Element => {
   const [value, setValue] = useState<string>(description);
-  const completedTask = useContext<fnType>(CompletedTask);
-  const removeTask = useContext<fnType>(RemoveTask);
-  const editidTask = useContext<((id: string | null, value: string) => void) | null>(EditidTask);
 
   const handleToggleCompleteTask = (): void => {
-    if (completedTask && id_) completedTask(id_);
+    if (handleCompletedTask && id_) handleCompletedTask(id_);
   };
 
-  const handleRemoveTask = (): void => {
-    if (removeTask && id_) removeTask(id_);
+  const handleRemove = (): void => {
+    if (handleRemoveTask && id_) handleRemoveTask(id_);
   };
 
   const handleChangeValue = (evt: React.KeyboardEvent<HTMLInputElement>): void => {
     const { target }: any = evt;
-    if (editidTask && id_) {
+    if (handleEditingTask && id_) {
       if (evt.keyCode === 13) {
-        editidTask(id_, target.value);
+        handleEditingTask(id_, target.value);
       }
     }
   };
@@ -33,6 +35,14 @@ const Task = ({ id_, status, description, created }: TaskTypes): JSX.Element => 
   const handleChangeData = (evt: React.ChangeEvent<HTMLInputElement>): void => {
     const { target } = evt;
     setValue(target.value);
+  };
+
+  const handlePlay = () => {
+    if (id_) handlePlayTask(id_);
+  };
+
+  const handlePause = () => {
+    if (id_) handlePauseTask(id_);
   };
 
   return (
@@ -45,11 +55,16 @@ const Task = ({ id_, status, description, created }: TaskTypes): JSX.Element => 
           onChange={handleToggleCompleteTask}
         />
         <label>
-          <span className="description">{description}</span>
-          <span className="created">created {created} ago</span>
+          <span className="title">{description}</span>
+          <span className="description">
+            <button type="button" onClick={handlePlay} className="icon icon-play" />
+            <button type="button" onClick={handlePause} className="icon icon-pause" />
+            {time}
+          </span>
+          <span className="description">{formatDistanceToNow(new Date(created))}</span>
         </label>
         <button type="button" className="icon icon-edit" />
-        <button type="button" className="icon icon-destroy" onClick={handleRemoveTask} />
+        <button type="button" className="icon icon-destroy" onClick={handleRemove} />
       </div>
       {status === 'editing' && (
         <input type="text" className="edit" onChange={handleChangeData} onKeyUp={handleChangeValue} value={value} />

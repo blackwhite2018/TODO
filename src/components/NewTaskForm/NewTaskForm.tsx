@@ -1,33 +1,32 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
-import AddTask from './../context/AddTask';
+import IHeaderProps from '../interfaces/IHeaderProps';
 import './index.css';
 
-const NewTaskForm: React.FC = () => {
+const NewTaskForm = ({ handleAddTask }: IHeaderProps) => {
   const [value, setValue] = useState<string>('');
-  const addTask = useContext<((value: string) => void) | null>(AddTask);
 
-  const handleAddTask = (evt: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (evt.keyCode === 13 && addTask) {
-      const target: any = evt.target;
-      addTask(target.value);
+  const handleAdd = (evt: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (evt.keyCode === 13 && handleAddTask) {
+      const { target }: any = evt;
+      handleAddTask(target.value);
       setValue('');
     }
   };
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>): void => {
-    const target: any = evt.target;
+    const { target } = evt;
     setValue(target.value);
   };
 
   return (
     <input
       className="new-todo"
-      placeholder="What needs to be done?"
+      placeholder="Task"
       value={value}
       autoFocus
       onChange={handleChange}
-      onKeyUp={handleAddTask}
+      onKeyUp={handleAdd}
     />
   );
 };

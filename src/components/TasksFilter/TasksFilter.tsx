@@ -1,19 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import shortid from 'shortid';
 
-import SetFilter from '../context/SetFilter';
 import TaskFilterTypes from '../interfaces/ITaskFilterTypes';
 import './index.css';
 
 const filters: Array<string> = ['All', 'Active', 'Completed'];
 
-const TasksFilter = ({ currentFilter }: TaskFilterTypes): JSX.Element => {
-  const setFilterContext = useContext(SetFilter);
-
-  const handleSetFilter = (evt: React.MouseEvent<HTMLButtonElement>): void => {
-    if (setFilterContext) {
+const TasksFilter = ({ handleSetFilter, currentFilter }: TaskFilterTypes): JSX.Element => {
+  const handleFilter = (evt: React.MouseEvent<HTMLButtonElement>): void => {
+    if (handleSetFilter) {
       const { target }: any = evt;
-      setFilterContext(target.dataset.filter);
+      handleSetFilter(target.dataset.filter);
     }
   };
 
@@ -22,7 +19,7 @@ const TasksFilter = ({ currentFilter }: TaskFilterTypes): JSX.Element => {
       <button
         type="button"
         className={currentFilter === filter ? 'selected' : ''}
-        onClick={handleSetFilter}
+        onClick={handleFilter}
         data-filter={filter}
       >
         {filter}

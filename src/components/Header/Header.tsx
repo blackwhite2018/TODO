@@ -1,13 +1,14 @@
 import React from 'react';
 
-import NewTaskForm from './../NewTaskForm';
+import IHeaderProps from '../interfaces/IHeaderProps';
+import NewTaskForm from '../NewTaskForm';
 import './index.css';
 
-const Header: React.FC = () => {
+const Header = ({ handleAddTask }: IHeaderProps) => {
   return (
     <header className="header">
-      <h1>className</h1>
-      <NewTaskForm />
+      <h1>todos</h1>
+      <NewTaskForm handleAddTask={handleAddTask} />
     </header>
   );
 };

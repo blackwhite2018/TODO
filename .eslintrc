@@ -24,6 +24,9 @@
     "react/jsx-props-no-spreading": "off",
     "no-unused-vars": "off",
     "import/no-extraneous-dependencies": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/no-autofocus": "off",
+    "operator-assignment": "off",
+    "react/no-this-in-sfc": "off"
   }
 }
